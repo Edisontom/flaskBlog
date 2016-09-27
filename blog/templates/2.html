@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Text:
+        <dd><textarea name=text rows=5 cols=40></textarea>
+
+      </dl>
+       <h1>Image upload:</h1>
+        <form id ="upload-form" action="{{ url_for('upload_file' ) }}" method= "post" enctype="multipart/form-data>"
+      <p><input type="file" name="file"><button type="submit" class="btn btn-primary">Upload</button>
+
+       <dt>Image upload:
+      <dd><input style="margin-left: 10%" type="file" name="image">
+          <dt>Music upload:
+          <dd><input style="margin-left: 10%" type="file" name="music">
+          <dd><input type="submit" value="Share">
+
+    </form>
+
+  {% endif %}
+  <ul class=entries>
+
+  {% for entry in entries %}
+      <li><h2>{{ entry.title }}</h2>
+          <p>{{ entry.text|safe }}</p>
+          {% if entry.image != "" %}
+          <img  src="{{ entry.image }}">
+      </li>
+          {% endif %}
+
+          {% if entry.music != "" %}
+   {% else %}
+      <br>
+      <audio controls>
+          <source src="/static/music/{{ entry.music }}" type="audio/mp3">
+      </audio>
+        {% endif %}
+
+      <li><em>Unbelievable. No entries here so far</em>
+    {% endfor %}
+     </ul>
+        {% endblock %}
+
+
+
